@@ -1,14 +1,14 @@
 #include "main.h"
 
-void _henv(void);
-void h_setenv(void);
-void h_unsetenv(void);
+void help_env(void);
+void help_setenv(void);
+void help_unsetenv(void);
 void help_history(void);
 
 /**
- * _henv - Displays information on the builtin command 'env'.
+ * help_env - Displays information on the shellby builtin command 'env'.
  */
-void _henv(void)
+void help_env(void)
 {
 	char *msg = "env: env\n\tPrints the current environment.\n";
 
@@ -16,9 +16,9 @@ void _henv(void)
 }
 
 /**
- * h_setenv - Displays information on the builtin command 'setenv'.
+ * help_setenv - Displays information on the shellby builtin command 'setenv'.
  */
-void h_setenv(void)
+void help_setenv(void)
 {
 	char *msg = "setenv: setenv [VARIABLE] [VALUE]\n\tInitializes a new";
 
@@ -30,10 +30,10 @@ void h_setenv(void)
 }
 
 /**
- * h_unsetenv - Displays information on the builtin command
+ * help_unsetenv - Displays information on the shellby builtin command
  * 'unsetenv'.
  */
-void h_unsetenv(void)
+void help_unsetenv(void)
 {
 	char *msg = "unsetenv: unsetenv [VARIABLE]\n\tRemoves an ";
 

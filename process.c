@@ -1,23 +1,23 @@
 #include "main.h"
 
-void _freeArg(char **args, char **fptr);
+void free_args(char **args, char **front);
 char *get_pid(void);
-char *env_val(char *_start, int len);
-void _repvar(char **args, int *exe_ret);
+char *get_env_value(char *beginning, int len);
+void variable_replacement(char **args, int *exe_ret);
 
 /**
- * _freeArg - Frees up memory taken by args.
+ * free_args - Frees up memory taken by args.
  * @args: A null-terminated double pointer containing commands/arguments.
- * @fptr: A double pointer to the _start of args.
+ * @front: A double pointer to the beginning of args.
  */
-void _freeArg(char **args, char **fptr)
+void free_args(char **args, char **front)
 {
-	size_t x;
+	size_t i;
 
-	for (x = 0; args[x] || args[x + 1]; x++)
-		free(args[x]);
+	for (i = 0; args[i] || args[i + 1]; i++)
+		free(args[i]);
 
-	free(fptr);
+	free(front);
 }
 
 /**
@@ -25,14 +25,14 @@ void _freeArg(char **args, char **fptr)
  * Description: Opens the stat file, a space-delimited file containing
  *              information about the current process. The PID is the
  *              first word in the file. The function reads the PID into
- *              a bsize and replace the space at the end with a \0 byte.
+ *              a buffer and replace the space at the end with a \0 byte.
  *
  * Return: The current process ID or NULL on failure.
  */
 char *get_pid(void)
 {
-	size_t x = 0;
-	char *bsize;
+	size_t i = 0;
+	char *buffer;
 	ssize_t file;
 
 	file = open("/proc/self/stat", O_RDONLY);
@@ -41,24 +41,24 @@ char *get_pid(void)
 		perror("Cant read file");
 		return (NULL);
 	}
-	bsize = malloc(120);
-	if (!bsize)
+	buffer = malloc(120);
+	if (!buffer)
 	{
 		close(file);
 		return (NULL);
 	}
-	read(file, bsize, 120);
-	while (bsize[i] != ' ')
+	read(file, buffer, 120);
+	while (buffer[i] != ' ')
 		i++;
-	bsize[i] = '\0';
+	buffer[i] = '\0';
 
 	close(file);
-	return (bsize);
+	return (buffer);
 }
 
 /**
- * env_val - Gets the value corresponding to an environmental variable.
- * @_start: The environmental variable to search for.
+ * get_env_value - Gets the value corresponding to an environmental variable.
+ * @beginning: The environmental variable to search for.
  * @len: The length of the environmental variable to search for.
  *
  * Return: If the variable is not found - an empty string.
@@ -66,7 +66,7 @@ char *get_pid(void)
  *
  * Description: Variables are stored in the format VARIABLE=VALUE.
  */
-char *env_val(char *_start, int len)
+char *get_env_value(char *beginning, int len)
 {
 	char **var_addr;
 	char *replacement = NULL, *temp, *var;
@@ -75,7 +75,7 @@ char *env_val(char *_start, int len)
 	if (!var)
 		return (NULL);
 	var[0] = '\0';
-	_strncat(var, _start, len);
+	_strncat(var, beginning, len);
 
 	var_addr = _getenv(var);
 	free(var);
@@ -94,7 +94,7 @@ char *env_val(char *_start, int len)
 }
 
 /**
- * _repvar - Handles variable replacement.
+ * variable_replacement - Handles variable replacement.
  * @line: A double pointer containing the command and arguments.
  * @exe_ret: A pointer to the return value of the last executed command.
  *
@@ -102,10 +102,10 @@ char *env_val(char *_start, int len)
  *              of the last executed program, and envrionmental variables
  *              preceded by $ with their corresponding value.
  */
-void _repvar(char **line, int *exe_ret)
+void variable_replacement(char **line, int *exe_ret)
 {
 	int j, k = 0, len;
-	char *replacement = NULL, *old_line = NULL, *nline;
+	char *replacement = NULL, *old_line = NULL, *new_line;
 
 	old_line = *line;
 	for (j = 0; old_line[j]; j++)
@@ -131,24 +131,24 @@ void _repvar(char **line, int *exe_ret)
 						old_line[k] != ' '; k++)
 					;
 				len = k - (j + 1);
-				replacement = env_val(&old_line[j + 1], len);
+				replacement = get_env_value(&old_line[j + 1], len);
 			}
-			nline = malloc(j + _strlen(replacement)
+			new_line = malloc(j + _strlen(replacement)
 					  + _strlen(&old_line[k]) + 1);
 			if (!line)
 				return;
-			nline[0] = '\0';
-			_strncat(nline, old_line, j);
+			new_line[0] = '\0';
+			_strncat(new_line, old_line, j);
 			if (replacement)
 			{
-				_strcat(nline, replacement);
+				_strcat(new_line, replacement);
 				free(replacement);
 				replacement = NULL;
 			}
-			_strcat(nline, &old_line[k]);
+			_strcat(new_line, &old_line[k]);
 			free(old_line);
-			*line = nline;
-			old_line = nline;
+			*line = new_line;
+			old_line = new_line;
 			j = -1;
 		}
 	}

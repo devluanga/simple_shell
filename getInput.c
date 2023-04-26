@@ -1,36 +1,36 @@
 /*this file will handle all the user inputs*/
 #include "main.h"
 
-void *__memoryAlloc(void *ptr, unsigned int old_size, unsigned int new_size);
-void assignPtr(char **lineptr, size_t *n, char *buffer, size_t b);
-ssize_t _userInput(char **lineptr, size_t *n, FILE *stream);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t b);
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 
 /**
- * __memoryAlloc - Reallocates a _memoryory block using malloc and free.
- * @ptr: A pointer to the _memoryory previously allocated.
+ * _realloc - Reallocates a memory block using malloc and free.
+ * @ptr: A pointer to the memory previously allocated.
  * @old_size: The size in bytes of the allocated space for ptr.
- * @new_size: The size in bytes for the new _memoryory block.
+ * @new_size: The size in bytes for the new memory block.
  *
  * Return: If new_size == old_size - ptr.
  *         If new_size == 0 and ptr is not NULL - NULL.
- *         Otherwise - a pointer to the reallocated _memoryory block.
+ *         Otherwise - a pointer to the reallocated memory block.
  */
-void *__memoryAlloc(void *ptr, unsigned int old_size, unsigned int new_size)
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 {
-	void *_memory;
-	char *ptr_copy, *_fil;
-	unsigned int value;
+	void *mem;
+	char *ptr_copy, *filler;
+	unsigned int index;
 
 	if (new_size == old_size)
 		return (ptr);
 
 	if (ptr == NULL)
 	{
-		_memory = malloc(new_size);
-		if (_memory == NULL)
+		mem = malloc(new_size);
+		if (mem == NULL)
 			return (NULL);
 
-		return (_memory);
+		return (mem);
 	}
 
 	if (new_size == 0 && ptr != NULL)
@@ -40,30 +40,30 @@ void *__memoryAlloc(void *ptr, unsigned int old_size, unsigned int new_size)
 	}
 
 	ptr_copy = ptr;
-	_memory = malloc(sizeof(*ptr_copy) * new_size);
-	if (_memory == NULL)
+	mem = malloc(sizeof(*ptr_copy) * new_size);
+	if (mem == NULL)
 	{
 		free(ptr);
 		return (NULL);
 	}
 
-	_fil = _memory;
+	filler = mem;
 
-	for (value = 0; value < old_size && value < new_size; value++)
-		_fil[value] = *ptr_copy++;
+	for (index = 0; index < old_size && index < new_size; index++)
+		filler[index] = *ptr_copy++;
 
 	free(ptr);
-	return (_memory);
+	return (mem);
 }
 
 /**
- * assignPtr - Reassigns the lineptr variable for _userInput.
+ * assign_lineptr - Reassigns the lineptr variable for _getline.
  * @lineptr: A buffer to store an input string.
  * @n: The size of lineptr.
  * @buffer: The string to assign to lineptr.
  * @b: The size of buffer.
  */
-void assignPtr(char **lineptr, size_t *n, char *buffer, size_t b)
+void assign_lineptr(char **lineptr, size_t *n, char *buffer, size_t b)
 {
 	if (*lineptr == NULL)
 	{
@@ -89,14 +89,14 @@ void assignPtr(char **lineptr, size_t *n, char *buffer, size_t b)
 }
 
 /**
- * _userInput - Reads input from a stream.
+ * _getline - Reads input from a stream.
  * @lineptr: A buffer to store the input.
  * @n: The size of lineptr.
  * @stream: The stream to read from.
  *
  * Return: The number of bytes read.
  */
-ssize_t _userInput(char **lineptr, size_t *n, FILE *stream)
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {
 	static ssize_t input;
 	ssize_t ret;
@@ -128,14 +128,14 @@ ssize_t _userInput(char **lineptr, size_t *n, FILE *stream)
 		}
 
 		if (input >= 120)
-			buffer = __memoryAlloc(buffer, input, input + 1);
+			buffer = _realloc(buffer, input, input + 1);
 
 		buffer[input] = c;
 		input++;
 	}
 	buffer[input] = '\0';
 
-	assignPtr(lineptr, n, buffer, input);
+	assign_lineptr(lineptr, n, buffer, input);
 
 	ret = input;
 	if (r != 0)

@@ -1,10 +1,4 @@
-/*
- * File: main.c
- * Auth: Alex Yu
- *       Brennan D Baraban
- */
-
-#include "shell.h"
+#include "main.h"
 
 void sig_handler(int sig);
 int execute(char **args, char **front);

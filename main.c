@@ -23,7 +23,7 @@ void _prompt(int sig)
  */
 int execute(char **args, char **front)
 {
-	pid_t child_pid;
+	pid_t child_pid = fork();
 	int status, flag = 0, ret = 0;
 	char *command = args[0];
 
@@ -42,7 +42,6 @@ int execute(char **args, char **front)
 	}
 	else
 	{
-		child_pid = fork();
 		if (child_pid == -1)
 		{
 			if (flag)
@@ -88,7 +87,7 @@ int main(int argc, char *argv[])
 	name = argv[0];
 	hist = 1;
 	aliases = NULL;
-	signal(SIGINT, _prompt);
+	signal(SIGINT, sig_handler);
 
 	*exe_ret = 0;
 	environ = _copyenv();

@@ -78,7 +78,6 @@ int execute(char **args, char **front)
  * main - Runs a simple UNIX command interpreter.
  * @argc: The number of arguments supplied to the program.
  * @argv: An array of pointers to the arguments.
- *
  * Return: The return value of the last executed command.
  */
 int main(int argc, char *argv[])
@@ -104,7 +103,6 @@ int main(int argc, char *argv[])
 		free_alias_list(aliases);
 		return (*exe_ret);
 	}
-
 	if (!isatty(STDIN_FILENO))
 	{
 		while (ret != END_OF_FILE && ret != EXIT)
@@ -113,7 +111,6 @@ int main(int argc, char *argv[])
 		free_alias_list(aliases);
 		return (*exe_ret);
 	}
-
 	while (1)
 	{
 		write(STDOUT_FILENO, prompt, 2);
@@ -127,7 +124,6 @@ int main(int argc, char *argv[])
 			exit(*exe_ret);
 		}
 	}
-
 	free_env();
 	free_alias_list(aliases);
 	return (*exe_ret);

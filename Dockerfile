@@ -1,18 +1,17 @@
-# get a lightweight image
-FROM alpine:latest
+# Use Ubuntu as the base image
+FROM ubuntu:latest
 
-# install all required packages
-RUN apk update && \
-    apk add --no-cache gcc musl-dev
+# Update package index and install GCC
+RUN apt-get update && apt-get install -y gcc
 
+# Set the working directory
+WORKDIR /app
 
-# copy the project image
-COPY . /root/shell/s_image
+# Copy the source code into the image
+COPY . .
 
-# provide a working directory
-WORKDIR /root/shell/s_image
-
-# compile the project
+# Compile the program
 RUN gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 
-ENTRYPOINT [ "./hsh" ]
+# Set the entrypoint command
+ENTRYPOINT ["./hsh"]

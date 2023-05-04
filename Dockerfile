@@ -4,6 +4,8 @@ FROM alpine:latest
 # install all required packages
 RUN apk update && \
     apk add --no-cache gcc musl-dev
+
+    
 # copy the project image
 COPY . /root/shell/s_image
 

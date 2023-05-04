@@ -117,3 +117,26 @@ from the above the execve command will need some arguements to be passed
             ctokens = strtok(cpath, ":");
         3.create a loop to ensure we append (/) followed by the command, then a terminating null character(\0)
 
+            Dockerfile
+Docker is a powerful platform for developing, shipping and running applications inside lightweight, portable containers. By incorporating Docker into our shell project, we can achieve several benefits:
+
+1. Reproducible builds
+Docker containers help maintain consistent environments across development, testing, and production stages, eliminating the "it works on my machine" problem.
+2. Faster deployments
+Docker images can be quickly built, shipped, and deployed, speeding up the overall deployment process.
+3. Scalability
+Docker enables easy horizontal scaling of your application, ensuring high availability and optimal resource utilization.
+4. Isolation
+Containers provide an isolated environment for your applications, preventing potential conflicts with other applications or system dependencies.
+
+To build the Docker image, navigate to the directory where you saved the Dockerfile and run the following command:
+            docker build -t my-shell-image .
+
+This will build the Docker image and tag it with the name my-shell-image. 
+Don't forget the . at the end of the command, which tells Docker to look for the Dockerfile in the current directory.
+
+Once the image is built, you can run your shell program inside a Docker container using the following command:
+
+        docker run -it my-shell-image
+
+This will start a new Docker container from the my-shell-image image and run your shell program inside it.

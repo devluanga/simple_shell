@@ -11,7 +11,7 @@ WORKDIR /app
 COPY . .
 
 # Compile the program
-RUN gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
+RUN gcc *.c -o hsh
 
 # Set the entrypoint command
 ENTRYPOINT ["./hsh"]

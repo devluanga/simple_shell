@@ -5,7 +5,7 @@ FROM alpine:latest
 RUN apk update && \
     apk add --no-cache gcc musl-dev
 
-    
+
 # copy the project image
 COPY . /root/shell/s_image
 
@@ -13,6 +13,6 @@ COPY . /root/shell/s_image
 WORKDIR /root/shell/s_image
 
 # compile the project
-gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
+RUN gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 
 ENTRYPOINT [ "./hsh" ]

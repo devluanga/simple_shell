@@ -130,7 +130,8 @@ Docker enables easy horizontal scaling of your application, ensuring high availa
 Containers provide an isolated environment for your applications, preventing potential conflicts with other applications or system dependencies.
 
 To build the Docker image, navigate to the directory where you saved the Dockerfile and run the following command:
-            docker build -t my-shell-image .
+
+        docker build -t my-shell-image .
 
 This will build the Docker image and tag it with the name my-shell-image. 
 Don't forget the . at the end of the command, which tells Docker to look for the Dockerfile in the current directory.

@@ -134,7 +134,7 @@ To build the Docker image, navigate to the directory where you saved the Dockerf
         docker build -t my-shell-image .
 
 This will build the Docker image and tag it with the name my-shell-image. 
-Don't forget the . at the end of the command, which tells Docker to look for the Dockerfile in the current directory.
+Don't forget the (.) at the end of the command, which tells Docker to look for the Dockerfile in the current directory.
 
 Once the image is built, you can run your shell program inside a Docker container using the following command:
 
